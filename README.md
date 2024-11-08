@@ -21,4 +21,4 @@ DB_HOST=localhost <br>
 DB_NAME={name of the new db you create i called it 363-A2} <br>
 DB_USER={your username on postgres, is most probably postgres} <br>
 DB_PASSWORD={your password on postgres} <br>
-DATABASE_URL=postgres://{replace with your username}:{replace with your password}@localhost:5432/363-A2
+DATABASE_URL=postgres://{replace with your username}:{replace with your password}@localhost:5432/{replace with your db_name}
