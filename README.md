@@ -14,7 +14,7 @@ To be able to work with postgres, install the following: <i>pip install psycopg2
 Request library to send GET requests to APIs: <i>pip install requests</i>
 Install package to be able to read .env files: <i>pip install python-dotenv</i>
 
-###.env File
+### .env File
 In the root directory, create a .env file --> click on create a new file and name it .env <br>
 Include the following: <br>
 DB_HOST=localhost <br>
