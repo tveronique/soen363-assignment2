@@ -11,7 +11,7 @@ stinky asf
 
 ### Packages to install
 To be able to work with postgres, install the following: <i>pip install psycopg2</i> <br>
-Request library to send GET requests to APIs: <i>pip install requests</i>
+Request library to send GET requests to APIs: <i>pip install requests</i> <br>
 Install package to be able to read .env files: <i>pip install python-dotenv</i>
 
 ### .env File
