@@ -17,7 +17,7 @@ conn = psycopg2.connect(
     password=DB_PASSWORD
 )
 
-#This file fetches the details from IMDBot for the tables that have no foreign keys i.e. for genre, content rating, keyword, language, countries
+#This file fetches the details from IMDBot for the tables that have no foreign keys i.e. for genre, content rating, keyword, language, country, actor, director
 def fetch_all_details():
     genres = set() 
     contentRating = ""
