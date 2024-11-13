@@ -24,7 +24,6 @@ conn = psycopg2.connect(
 # Info obtained from IMDBot: title, plot, viewer_rating, release_year, imdb_id
 # Info obtained from WatchMode: tmdb_id, watchmode_id
 
-
 # Fetch movie details from IMDBot API
 def fetch_movie_details():
     url = "https://search.imdbot.workers.dev/?tt=tt1099212"  # for Twilight - part 2 & 3 movie
@@ -79,6 +78,11 @@ def fetch_watchmode_movie_details(imdb_id):
 def insert_movie_details(title, plot, viewers_rating, release_year, imdb_id, tmdb_id, watchmode_id):
     with conn.cursor() as cur:
         try:
+            cur.execute("SELECT 1 FROM movie WHERE imdb_id = %s", (imdb_id,))
+            if cur.fetchone():
+                print(f"Movie with IMDb ID {imdb_id} already exists in the database. Skipping insertion.")
+                return
+
             cur.execute("""
                 INSERT INTO movie (title, plot, viewers_rating, release_year, imdb_id, tmdb_id, watchmode_id)
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
