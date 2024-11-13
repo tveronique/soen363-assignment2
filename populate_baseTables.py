@@ -91,12 +91,10 @@ def fetch_all_details():
 def insert_genre(name):
     with conn.cursor() as cur:
         try:
-            cur.execute("""
-                INSERT INTO genre (name)
-                VALUES (%s)
-                ON CONFLICT (name) DO NOTHING;
-            """, (name,))
-            conn.commit()
+            cur.execute("SELECT 1 FROM genre WHERE name = %s", (name,))
+            if cur.fetchone() is None:
+                cur.execute("INSERT INTO genre (name) VALUES (%s)", (name,))
+                conn.commit()
         except Exception as e:
             print(f"Error inserting genre {name}: {e}")
 
@@ -104,12 +102,10 @@ def insert_contentRating(content_rating):
     if content_rating:
         with conn.cursor() as cur:
             try:
-                cur.execute("""
-                    INSERT INTO content_rating (rating)
-                    VALUES (%s)
-                    ON CONFLICT (rating) DO NOTHING;
-                """, (content_rating,))
-                conn.commit()
+                cur.execute("SELECT 1 FROM content_rating WHERE rating = %s", (content_rating,))
+                if cur.fetchone() is None:
+                    cur.execute("INSERT INTO content_rating (rating) VALUES (%s)", (content_rating,))
+                    conn.commit()
             except Exception as e:
                 print(f"Error inserting content rating {content_rating}: {e}")
 
@@ -117,12 +113,10 @@ def insert_keywords(keywords):
     with conn.cursor() as cur:
         for keyword in keywords:
             try:
-                cur.execute("""
-                    INSERT INTO keyword (word)
-                    VALUES (%s)
-                    ON CONFLICT (word) DO NOTHING;
-                """, (keyword,))
-                conn.commit()
+                cur.execute("SELECT 1 FROM keyword WHERE word = %s", (keyword,))
+                if cur.fetchone() is None:
+                    cur.execute("INSERT INTO keyword (word) VALUES (%s)", (keyword,))
+                    conn.commit()
             except Exception as e:
                 print(f"Error inserting keyword {keyword}: {e}")
 
@@ -130,12 +124,10 @@ def insert_languages(languages):
     with conn.cursor() as cur:
         for lang in languages:
             try:
-                cur.execute("""
-                    INSERT INTO language (name)
-                    VALUES (%s)
-                    ON CONFLICT (name) DO NOTHING;
-                """, (lang,))
-                conn.commit()
+                cur.execute("SELECT 1 FROM language WHERE name = %s", (lang,))
+                if cur.fetchone() is None:
+                    cur.execute("INSERT INTO language (name) VALUES (%s)", (lang,))
+                    conn.commit()
             except Exception as e:
                 print(f"Error inserting language {lang}: {e}")
 
@@ -143,12 +135,10 @@ def insert_countries(country_names, country_ids):
     with conn.cursor() as cur:
         for name, country_id in zip(country_names, country_ids):
             try:
-                cur.execute("""
-                    INSERT INTO country (country_name, country_code)
-                    VALUES (%s, %s)
-                    ON CONFLICT (country_name) DO NOTHING;
-                """, (name, country_id))
-                conn.commit()
+                cur.execute("SELECT 1 FROM country WHERE country_name = %s", (name,))
+                if cur.fetchone() is None:
+                    cur.execute("INSERT INTO country (country_name, country_code) VALUES (%s, %s)", (name, country_id))
+                    conn.commit()
             except Exception as e:
                 print(f"Error inserting country {name} with ID {country_id}: {e}")
 
@@ -156,29 +146,25 @@ def insert_actors(actors):
     with conn.cursor() as cur:
         for act in actors:
             try:
-                cur.execute("""
-                    INSERT INTO actor (name)
-                    VALUES (%s)
-                    ON CONFLICT (name) DO NOTHING;
-                """, (act,))
-                conn.commit()
+                cur.execute("SELECT 1 FROM actor WHERE name = %s", (act,))
+                if cur.fetchone() is None:
+                    cur.execute("INSERT INTO actor (name) VALUES (%s)", (act,))
+                    conn.commit()
             except Exception as e:
-                print(f"Error inserting language {act}: {e}")
+                print(f"Error inserting actor {act}: {e}")
 
 def insert_directors(directors):
     with conn.cursor() as cur:
         for dir in directors:
             try:
-                cur.execute("""
-                    INSERT INTO director (name)
-                    VALUES (%s)
-                    ON CONFLICT (name) DO NOTHING;
-                """, (dir,))
-                conn.commit()
+                cur.execute("SELECT 1 FROM director WHERE name = %s", (dir,))
+                if cur.fetchone() is None:
+                    cur.execute("INSERT INTO director (name) VALUES (%s)", (dir,))
+                    conn.commit()
             except Exception as e:
-                print(f"Error inserting language {dir}: {e}")
+                print(f"Error inserting director {dir}: {e}")
 
-# Main function to populate the genre table
+# Main function to populate the base tables
 def populate_all_details_from_api():
     genres, contentRating, keywords, languages, country_name, country_id, actors, directors = fetch_all_details()
 
@@ -198,6 +184,5 @@ def populate_all_details_from_api():
     insert_directors(directors)
 
     print("All tables populated successfully.")
-
 
 populate_all_details_from_api()
